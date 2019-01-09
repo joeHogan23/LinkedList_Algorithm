@@ -6,14 +6,12 @@
 template<typename T>
 class LinkedList {
 private:
-	Node<T> *head, *tail; //Front and Back 
+	Node<T> *head, *tail; 	//Front and Back 
 
 public:
-
 	LinkedList() 
 	{
-		//Default head and tail to nullptr
-		head = tail = 0;
+		head = tail = 0; 	//Default head and tail to nullptr
 	};
 	
 	~LinkedList() 
@@ -21,8 +19,8 @@ public:
 		while (!isEmpty()) 
 		{
 			Node<T>* tmp = head->getNext();	 //Set tmp to address of next Node in list
-			delete head; //delete the head
-			head = tmp;	 //Push head to next Node. When this is null, list is empty
+			delete head; 	//delete the head
+			head = tmp;	//Push head to next Node. When this is null, list is empty
 			cout << "Node "<< count() <<" deleted" << endl;
 		}
 		cout << "List deleted" << endl;
@@ -31,11 +29,11 @@ public:
 	//Search which is Used for classes where there is no specific value (int, string) tied to it
 	T searchByKey(string key);	
 
-	T popFirstOf(T inData); //Find first element matching data
-	T popLastOf(T inData);  //Find last element matching data
+	T popFirstOf(T inData);		//Find first element matching data
+	T popLastOf(T inData);  	//Find last element matching data
 
-	void pushFront(T data, string inKey = ""); //Set Tail	
-	void pushBack(T data, string inKey = "");  //Set Head	
+	void pushFront(T data, string inKey = "");	//Set Tail	
+	void pushBack(T data, string inKey = "");  	//Set Head	
 
 	T popFront();	//Return head and remove from list 
 	T popBack();	//Return tail and remove from list
@@ -71,20 +69,23 @@ inline T LinkedList<T>::popFirstOf(T inData)
 {
 	if (head != 0) 
 	{
-		T data = head->getData();
-
-		if (head == tail && head->getData() == inData)
-		{
-			delete head;	//Delete the head
-			head = tail = 0;	//Empty out list
-			return data;	//Return data
-		}
-		else if (head->getData() == inData)
-		{
-			Node<T>* tmp = head;	
-			head = head->getNext();	//Assign new head to next Link
-			delete tmp;		//Delete old head
-			return data;	//Return data
+		T data = head->getData();	//Set data as head node's data
+		
+		//If first head's data matches search data
+		if(head->getData() == inData){
+			
+			//Only one element in head
+			if (head == tail)	
+			{
+				delete head;		//Delete the head
+				head = tail = 0;	//Empty out list
+				return data;		//Return data
+			}else{
+				Node<T>* tmp = head;	
+				head = head->getNext();	//Assign new head to next Link
+				delete tmp;		//Delete old head
+				return data;		//Return data
+			}
 		}
 		else
 		{
@@ -94,8 +95,10 @@ inline T LinkedList<T>::popFirstOf(T inData)
 			if (tmp != 0) 
 			{
 				prev->setNext(tmp->getNext());	//Stitch elements before and after found element together
+				
 				if (tmp == tail)
 					tail = prev; //If item is at the end of list, push tail back to prev's position
+				
 				data = tmp->getData();	//Pass Node data to T data
 				delete tmp;		//Delete found Node
 				return data;	//Return deleted Node's data
